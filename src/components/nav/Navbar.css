@@ -1,0 +1,11 @@
+img.logo {
+  max-width: 2rem;
+  max-height: 2rem;
+  border: none;
+  border-radius: 50% !important;
+  padding: 0;
+}
+
+.navbar-start {
+  margin: auto;
+}
