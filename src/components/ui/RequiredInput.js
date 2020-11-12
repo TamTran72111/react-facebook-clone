@@ -41,12 +41,12 @@ const RequiredInput = ({
         />
         {icon && (
           <span className="icon is-small is-left">
-            <i className="`fas ${icon}`"></i>
+            <i className={`fas ${icon}`}></i>
           </span>
         )}
         {danger && (
-          <span class="icon is-small is-right has-text-danger">
-            <i class="fas fa-exclamation-circle"></i>
+          <span className="icon is-small is-right has-text-danger">
+            <i className="fas fa-exclamation-circle"></i>
           </span>
         )}
       </div>
