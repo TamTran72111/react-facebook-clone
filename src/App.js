@@ -4,6 +4,7 @@ import { Router, Switch, Route } from "react-router-dom";
 import history from "./history";
 import Navbar from "./components/nav/Navbar";
 import Home from "./pages/Home";
+import Auth from "./pages/Auth";
 
 const App = () => {
   return (
@@ -14,7 +15,8 @@ const App = () => {
         </div>
         <div className="container">
           <Switch>
-            <Route path="/" component={Home} />
+            <Route path="/" exact component={Home} />
+            <Route path="/auth" exact component={Auth} />
           </Switch>
         </div>
       </Router>

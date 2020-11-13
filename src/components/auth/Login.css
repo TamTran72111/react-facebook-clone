@@ -1,0 +1,18 @@
+form {
+  max-width: 400px;
+  width: 100vw;
+  margin: auto;
+  padding: 2rem;
+  border: 2px solid black;
+  border-radius: 10px;
+  background-color: #fff;
+}
+
+form .login {
+  width: 100%;
+}
+
+form hr {
+  border-top: 1px solid black;
+  border-bottom: none;
+}
