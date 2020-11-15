@@ -1,10 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
+import { signOut } from "../../redux/actions/auth";
 import logo from "./logo.png";
 import "./Navbar.css";
 
-const Navbar = () => {
+const Navbar = ({ signOut }) => {
   return (
     <nav className="navbar">
       <div className="navbar-brand">
@@ -16,6 +18,7 @@ const Navbar = () => {
           type="text"
           placeholder="Search"
         />
+        {/* eslint-disable-next-line */}
         <a className="navbar-burger burger">
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
@@ -59,7 +62,7 @@ const Navbar = () => {
         <div className="navbar-end">
           <div className="navbar-item">
             <div className="buttons">
-              <button className="button is-primary">
+              <button className="button is-primary" onClick={signOut}>
                 <strong>Logout</strong>
               </button>
             </div>
@@ -70,4 +73,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default connect(null, { signOut })(Navbar);
