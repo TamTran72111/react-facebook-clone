@@ -18,7 +18,7 @@ const ErrorMessage = ({ errorMessage, onClick }) => {
   if (modalEl === null) return null;
 
   return ReactDOM.createPortal(
-    <div>
+    <div className="errorMessage">
       {errorMessage && (
         <div className="modal-background" onClick={onClick}></div>
       )}

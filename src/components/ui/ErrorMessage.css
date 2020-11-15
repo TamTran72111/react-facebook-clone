@@ -1,4 +1,4 @@
-.modal-content {
+.errorMessage .modal-content {
   position: absolute;
   width: 100%;
   top: 50px;
@@ -8,16 +8,16 @@
   opacity: 0;
   transform: translateY(-30px);
 }
-.modal-content.show {
+.errorMessage .modal-content.show {
   opacity: 1;
   transform: translateY(0);
 }
 
-.modal-content .box {
+.errorMessage .modal-content .box {
   margin: auto;
   max-width: 600px;
 }
 
-.modal-background {
+.errorMessage .modal-background {
   z-index: 100;
 }
