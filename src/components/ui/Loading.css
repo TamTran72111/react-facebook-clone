@@ -1,0 +1,15 @@
+.loading-modal {
+  background-color: rbga(10, 10, 10, 1);
+}
+
+.loader-wrapper {
+  height: 200px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.loader-wrapper .loader {
+  height: 80px;
+  width: 80px;
+}

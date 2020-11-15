@@ -1,12 +1,20 @@
 import React from "react";
-import Login from "../components/auth/Login";
+import { connect } from "react-redux";
 
-const Auth = () => {
+import Login from "../components/auth/Login";
+import Loading from "../components/ui/Loading";
+import { getLoadingStatus } from "../redux/selectors/loading";
+
+const Auth = ({ isLoading }) => {
   return (
-    <div>
+    <>
+      {isLoading && <Loading />}
       <Login />
-    </div>
+    </>
   );
 };
 
-export default Auth;
+const mapStateToProps = (state) => {
+  return { isLoading: getLoadingStatus(state) };
+};
+export default connect(mapStateToProps)(Auth);

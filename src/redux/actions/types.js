@@ -3,3 +3,6 @@ export const SIGN_OUT = "SIGN_OUT";
 
 export const LISTEN_AUTH = "LISTEN_AUTH";
 export const CLEANUP_AUTH = "CLEANUP_AUTH";
+
+export const LOADING = "LOADING";
+export const LOADED = "LOADED";

@@ -1,10 +1,18 @@
-import { CLEANUP_AUTH, LISTEN_AUTH, SIGN_IN, SIGN_OUT } from "./types";
+import {
+  CLEANUP_AUTH,
+  LISTEN_AUTH,
+  LOADED,
+  LOADING,
+  SIGN_IN,
+  SIGN_OUT,
+} from "./types";
 import { auth, db, firestore } from "../../firebase";
 
 const defaultUserAvatar =
   "https://firebasestorage.googleapis.com/v0/b/vue-projects-89c61.appspot.com/o/avatars%2Fdefault-user-avater.png?alt=media&token=55e5edb1-e550-4161-8ee0-3e72d2d2a20f";
 
-export const signIn = (userAuthInfo) => async () => {
+export const signIn = (userAuthInfo) => async (dispatch) => {
+  dispatch({ type: LOADING });
   await auth.signInWithEmailAndPassword(
     userAuthInfo.email,
     userAuthInfo.password
@@ -42,6 +50,7 @@ export const signUp = (userAuthInfo) => async (dispatch) => {
 };
 
 export const setupAuthListener = () => (dispatch) => {
+  dispatch({ type: LOADING });
   const listener = auth.onAuthStateChanged(async (user) => {
     if (user) {
       // User is signed in, so fetch the user data
@@ -54,6 +63,7 @@ export const setupAuthListener = () => (dispatch) => {
       // No user is signed in, so sign out to clear the data
       dispatch({ type: SIGN_OUT });
     }
+    dispatch({ type: LOADED });
   });
   dispatch({ type: LISTEN_AUTH, payload: listener });
 };

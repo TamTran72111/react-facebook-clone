@@ -3,6 +3,7 @@ import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
 import { signIn } from "../../redux/actions/auth";
+import { finishedLoading } from "../../redux/actions/loading";
 import RequiredInput from "../ui/RequiredInput";
 import ErrorMessage from "../ui/ErrorMessage";
 import { getIsLoggedIn } from "../../redux/selectors/auth";
@@ -10,7 +11,7 @@ import Signup from "./Signup";
 
 import "./Login.css";
 
-const Login = ({ signIn, isLoggedIn }) => {
+const Login = ({ signIn, isLoggedIn, finishedLoading }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -22,6 +23,7 @@ const Login = ({ signIn, isLoggedIn }) => {
       try {
         await signIn({ email, password });
       } catch (err) {
+        finishedLoading();
         setError(err.message);
       }
     } else {
@@ -89,4 +91,4 @@ const mapStateToProps = (state) => {
   return { isLoggedIn: getIsLoggedIn(state) };
 };
 
-export default connect(mapStateToProps, { signIn })(Login);
+export default connect(mapStateToProps, { signIn, finishedLoading })(Login);
