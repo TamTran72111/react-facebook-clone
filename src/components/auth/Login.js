@@ -6,6 +6,7 @@ import { signIn } from "../../redux/actions/auth";
 import RequiredInput from "../ui/RequiredInput";
 import ErrorMessage from "../ui/ErrorMessage";
 import { getIsLoggedIn } from "../../redux/selectors/auth";
+import Signup from "./Signup";
 
 import "./Login.css";
 
@@ -13,6 +14,7 @@ const Login = ({ signIn, isLoggedIn }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [showSignup, setShowSignup] = useState(false);
 
   const login = async (e) => {
     e.preventDefault();
@@ -31,7 +33,7 @@ const Login = ({ signIn, isLoggedIn }) => {
 
   return (
     <div>
-      <form onSubmit={login}>
+      <form className="loginForm" onSubmit={login}>
         <RequiredInput
           type="email"
           placeholder="Email"
@@ -68,13 +70,17 @@ const Login = ({ signIn, isLoggedIn }) => {
 
         <div className="field has-text-centered">
           <div className="control">
-            <span className="button is-success is-size-5 has-text-weight-bold">
+            <span
+              className="button is-success is-size-5 has-text-weight-bold"
+              onClick={() => setShowSignup(true)}
+            >
               Create new account
             </span>
           </div>
         </div>
       </form>
       <ErrorMessage errorMessage={error} onClick={() => setError("")} />
+      <Signup show={showSignup} hide={() => setShowSignup(false)} />
     </div>
   );
 };

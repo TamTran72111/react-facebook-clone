@@ -1,0 +1,12 @@
+.field.is-justify-content-space-between {
+  display: flex;
+}
+
+.box {
+  max-width: 500px;
+}
+
+a.button {
+  height: 40px;
+  width: 180px;
+}
