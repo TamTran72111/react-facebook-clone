@@ -10,9 +10,7 @@ const App = () => {
   return (
     <div className="app">
       <Router history={history}>
-        <div className="nav-wrapper">
-          <Navbar />
-        </div>
+        <Navbar />
         <div className="container">
           <Switch>
             <Route path="/" exact component={Home} />
