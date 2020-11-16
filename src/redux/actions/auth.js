@@ -24,6 +24,7 @@ export const signOut = () => () => {
 };
 
 export const signUp = (userAuthInfo) => async (dispatch) => {
+  dispatch({ type: LOADING });
   const authUser = await auth.createUserWithEmailAndPassword(
     userAuthInfo.email,
     userAuthInfo.password

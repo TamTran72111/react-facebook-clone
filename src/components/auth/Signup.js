@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 
 import { signUp } from "../../redux/actions/auth";
+import { finishedLoading } from "../../redux/actions/loading";
 import BaseModal from "../ui/BaseModal";
 import ErrorMessage from "../ui/ErrorMessage";
 import RequiredInput from "../ui/RequiredInput";
 
 import "./Signup.css";
 
-const Signup = ({ show, hide, signUp }) => {
+const Signup = ({ show, hide, signUp, finishedLoading }) => {
   const [firstname, setFirstname] = useState("");
   const [surname, setSurname] = useState("");
   const [email, setEmail] = useState("");
@@ -20,6 +21,7 @@ const Signup = ({ show, hide, signUp }) => {
     try {
       await signUp({ email, password, firstname, surname });
     } catch (err) {
+      finishedLoading();
       setError(err.message);
     }
   };
@@ -114,4 +116,4 @@ const Signup = ({ show, hide, signUp }) => {
   );
 };
 
-export default connect(null, { signUp })(Signup);
+export default connect(null, { signUp, finishedLoading })(Signup);
