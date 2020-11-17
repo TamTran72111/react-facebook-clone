@@ -7,6 +7,7 @@ import Navbar from "./components/nav/Navbar";
 import Home from "./pages/Home";
 import Auth from "./pages/Auth";
 import { setupAuthListener, cleanupAuth } from "./redux/actions/auth";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = ({ setupAuthListener, cleanupAuth }) => {
   useEffect(() => {
@@ -20,7 +21,7 @@ const App = ({ setupAuthListener, cleanupAuth }) => {
         <Navbar />
         <div className="container">
           <Switch>
-            <Route path="/" exact component={Home} />
+            <ProtectedRoute path="/" exact component={Home} />
             <Route path="/auth" exact component={Auth} />
           </Switch>
         </div>

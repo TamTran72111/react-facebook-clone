@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect, useLocation } from "react-router-dom";
 import { connect } from "react-redux";
 
 import { signIn } from "../../redux/actions/auth";
@@ -12,6 +12,7 @@ import Signup from "./Signup";
 import "./Login.css";
 
 const Login = ({ signIn, isLoggedIn, finishedLoading }) => {
+  const location = useLocation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -31,7 +32,10 @@ const Login = ({ signIn, isLoggedIn, finishedLoading }) => {
     }
   };
 
-  if (isLoggedIn) return <Redirect to="/" />;
+  const redirectLocation = location.state?.from || "/";
+  if (isLoggedIn) {
+    return <Redirect to={redirectLocation} />;
+  }
 
   return (
     <div>
