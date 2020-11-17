@@ -6,8 +6,14 @@
   width: 100vw;
   z-index: 1;
 }
+
 .app {
   padding-top: 6rem;
   background: #242526;
   min-height: 100vh;
+}
+
+.center-box {
+  max-width: 600px;
+  margin: auto;
 }

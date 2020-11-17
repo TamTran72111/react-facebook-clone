@@ -1,0 +1,10 @@
+.createPost {
+  display: flex;
+}
+.createPost__avatar {
+  margin-right: 1rem;
+}
+
+.createPost input.input {
+  cursor: pointer;
+}

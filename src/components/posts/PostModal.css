@@ -1,0 +1,13 @@
+.post-modal span.icon.is-right {
+  transform: translateY(-1.7rem);
+  font-size: 2rem;
+}
+
+.post-modal i.fa-times-circle {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.post-modal i.fa-times-circle:hover {
+  color: #c0c0c0;
+}
