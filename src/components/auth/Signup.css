@@ -1,12 +1,13 @@
-.field.is-justify-content-space-between {
+.signup .field.is-justify-content-space-between {
   display: flex;
 }
 
-.box {
+.signup .box {
   max-width: 500px;
+  margin: auto;
 }
 
-a.button {
+.signup a.button {
   height: 40px;
   width: 180px;
 }

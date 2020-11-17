@@ -32,7 +32,7 @@ const Signup = ({ show, hide, signUp, finishedLoading }) => {
     <BaseModal className="modal is-active">
       <ErrorMessage errorMessage={error} onClick={() => setError("")} />
       <div className="modal-background" onClick={hide}></div>
-      <div className="modal-content">
+      <div className="modal-content signup">
         <div className="box">
           <h3 className="title is-2 mb-2">Sign Up</h3>
           <span className="has-text-grey">It's quick and easy.</span>
