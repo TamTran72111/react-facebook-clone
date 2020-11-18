@@ -1,9 +1,12 @@
 import React from "react";
+import { connect } from "react-redux";
 
 import UserAvatar from "../ui/UserAvatar";
+import EditAndDelete from "../ui/EditAndDelete";
+import { getIsAuthor } from "../../redux/selectors/auth";
 import "./Post.css";
 
-const Post = ({ post }) => {
+const Post = ({ post, isAuthor }) => {
   const created_at = new Date(post.created_at.seconds * 1000);
   const date = `${created_at.toLocaleTimeString()} ${created_at.toLocaleDateString()}`;
 
@@ -18,6 +21,12 @@ const Post = ({ post }) => {
             <p className="title is-4">{post.displayName}</p>
             <p className="subtitle is-6">{date}</p>
           </div>
+
+          <EditAndDelete
+            isAuthor={isAuthor}
+            toggleEdit={() => {}}
+            toggleDelete={() => {}}
+          />
         </div>
 
         <div className="content">{post.post}</div>
@@ -42,4 +51,8 @@ const Post = ({ post }) => {
   );
 };
 
-export default Post;
+const mapStateToProps = (state, ownProps) => ({
+  isAuthor: getIsAuthor(state, ownProps.post.userId),
+});
+
+export default connect(mapStateToProps)(Post);
