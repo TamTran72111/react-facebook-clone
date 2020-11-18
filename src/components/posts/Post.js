@@ -1,12 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 
+import PostModal from "./PostModal";
 import UserAvatar from "../ui/UserAvatar";
 import EditAndDelete from "../ui/EditAndDelete";
 import { getIsAuthor } from "../../redux/selectors/auth";
+import { db } from "../../firebase";
 import "./Post.css";
 
 const Post = ({ post, isAuthor }) => {
+  const [showEditPost, setShowEditPost] = useState(false);
+  const [editedPost, setEditedPost] = useState(post.post);
+
+  const toggleEditPost = () => {
+    if (showEditPost) {
+      setEditedPost(post.post);
+    }
+    setShowEditPost(!showEditPost);
+  };
+
+  const editPost = () => {
+    db.collection("posts").doc(post.id).update({ post: editedPost });
+    setShowEditPost(false);
+  };
+
   const created_at = new Date(post.created_at.seconds * 1000);
   const date = `${created_at.toLocaleTimeString()} ${created_at.toLocaleDateString()}`;
 
@@ -24,7 +41,7 @@ const Post = ({ post, isAuthor }) => {
 
           <EditAndDelete
             isAuthor={isAuthor}
-            toggleEdit={() => {}}
+            toggleEdit={toggleEditPost}
             toggleDelete={() => {}}
           />
         </div>
@@ -47,6 +64,15 @@ const Post = ({ post, isAuthor }) => {
           </div>
         </div>
       </div>
+      <PostModal
+        title="Edit Post"
+        buttonText="Edit"
+        buttonClick={editPost}
+        show={showEditPost}
+        value={editedPost}
+        onChange={(e) => setEditedPost(e.target.value)}
+        close={toggleEditPost}
+      />
     </div>
   );
 };
