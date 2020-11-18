@@ -1,13 +1,24 @@
-import React from "react";
-import CreatePost from "../components/posts/CreatePost";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
 
-const Home = () => {
+import CreatePost from "../components/posts/CreatePost";
+import PostList from "../components/posts/PostList";
+import { fetchAllPosts, cleanupPosts } from "../redux/actions/posts";
+
+const Home = ({ fetchAllPosts, cleanupPosts }) => {
+  useEffect(() => {
+    fetchAllPosts();
+    return () => {
+      cleanupPosts();
+    };
+  }, [fetchAllPosts, cleanupPosts]);
+
   return (
     <div className="center-box">
-      Home page
       <CreatePost />
+      <PostList />
     </div>
   );
 };
 
-export default Home;
+export default connect(null, { fetchAllPosts, cleanupPosts })(Home);

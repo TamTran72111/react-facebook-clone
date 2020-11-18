@@ -1,0 +1,37 @@
+.post .iteractions {
+  display: flex;
+  text-align: center;
+}
+
+.post .iteractions div {
+  flex-grow: 1;
+}
+
+.post .iteractions span.icon {
+  margin-right: 0.5rem;
+}
+
+.post span.icon {
+  cursor: pointer;
+}
+
+.post hr {
+  margin-bottom: 5px;
+}
+
+.post .dropdown-menu {
+  transform: translateX(-90%);
+  min-width: 6.5rem;
+}
+
+.post .dropdown-item {
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+.post .dropdown-item:hover {
+  background: #e0e0e0;
+}
