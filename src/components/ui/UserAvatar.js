@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+import "./UserAvatar.css";
+
 const UserAvatar = ({ type, src, userId }) => {
   let size;
   if (type === "comment") {
@@ -13,7 +15,7 @@ const UserAvatar = ({ type, src, userId }) => {
 
   return (
     <Link to={`/users/${userId}`}>
-      <figure className={`image ${size ? size : ""}`}>
+      <figure className={`image user-avatar ${size ? size : ""}`}>
         <img className="is-rounded" src={src} alt="User avatar" />
       </figure>
     </Link>
