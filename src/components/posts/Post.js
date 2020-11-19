@@ -5,12 +5,13 @@ import PostModal from "./PostModal";
 import UserAvatar from "../ui/UserAvatar";
 import EditAndDelete from "../ui/EditAndDelete";
 import ConfirmationModal from "../ui/ConfirmationModal";
+import { likePost } from "../../redux/actions/likes";
 import { getAuthUser, getIsAuthor } from "../../redux/selectors/auth";
-import { db, firestore } from "../../firebase";
-import "./Post.css";
 import { getLikeStatus } from "../../redux/selectors/likes";
+import { db } from "../../firebase";
+import "./Post.css";
 
-const Post = ({ post, isAuthor, userId, liked }) => {
+const Post = ({ post, isAuthor, likePost, liked }) => {
   const [showEditPost, setShowEditPost] = useState(false);
   const [editedPost, setEditedPost] = useState(post.post);
   const [showDelete, setShowDelete] = useState(false);
@@ -35,16 +36,9 @@ const Post = ({ post, isAuthor, userId, liked }) => {
   };
 
   const toggleLike = () => {
-    const batch = db.batch();
-    batch.update(db.collection("posts").doc(post.id), {
-      likes: firestore.FieldValue.increment(1),
-    });
-    batch.set(db.collection("likes").doc(), {
-      userId,
-      postId: post.id,
-      created_at: firestore.FieldValue.serverTimestamp(),
-    });
-    batch.commit();
+    if (!liked) {
+      likePost(post.id);
+    }
   };
 
   let created_at;
@@ -127,4 +121,4 @@ const mapStateToProps = (state, ownProps) => ({
   liked: getLikeStatus(state, ownProps.post.id),
 });
 
-export default connect(mapStateToProps)(Post);
+export default connect(mapStateToProps, { likePost })(Post);
