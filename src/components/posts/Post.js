@@ -47,7 +47,13 @@ const Post = ({ post, isAuthor, userId, liked }) => {
     batch.commit();
   };
 
-  const created_at = new Date(post.created_at.seconds * 1000);
+  let created_at;
+  if (post.created_at) {
+    created_at = new Date(post.created_at.seconds * 1000);
+  } else {
+    // Backup plan in case created_at is null
+    created_at = new Date();
+  }
   const date = `${created_at.toLocaleTimeString()} ${created_at.toLocaleDateString()}`;
 
   return (
