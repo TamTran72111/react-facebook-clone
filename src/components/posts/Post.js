@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import PostModal from "./PostModal";
 import UserAvatar from "../ui/UserAvatar";
 import EditAndDelete from "../ui/EditAndDelete";
+import ConfirmationModal from "../ui/ConfirmationModal";
 import { getIsAuthor } from "../../redux/selectors/auth";
 import { db } from "../../firebase";
 import "./Post.css";
@@ -11,6 +12,7 @@ import "./Post.css";
 const Post = ({ post, isAuthor }) => {
   const [showEditPost, setShowEditPost] = useState(false);
   const [editedPost, setEditedPost] = useState(post.post);
+  const [showDelete, setShowDelete] = useState(false);
 
   const toggleEditPost = () => {
     if (showEditPost) {
@@ -22,6 +24,13 @@ const Post = ({ post, isAuthor }) => {
   const editPost = () => {
     db.collection("posts").doc(post.id).update({ post: editedPost });
     setShowEditPost(false);
+  };
+
+  const toggleDelete = () => setShowDelete((prev) => !prev);
+
+  const confirmDelete = () => {
+    db.collection("posts").doc(post.id).delete();
+    setShowDelete(false);
   };
 
   const created_at = new Date(post.created_at.seconds * 1000);
@@ -42,7 +51,7 @@ const Post = ({ post, isAuthor }) => {
           <EditAndDelete
             isAuthor={isAuthor}
             toggleEdit={toggleEditPost}
-            toggleDelete={() => {}}
+            toggleDelete={toggleDelete}
           />
         </div>
 
@@ -64,6 +73,8 @@ const Post = ({ post, isAuthor }) => {
           </div>
         </div>
       </div>
+
+      {/* Edit Post */}
       <PostModal
         title="Edit Post"
         buttonText="Edit"
@@ -73,6 +84,19 @@ const Post = ({ post, isAuthor }) => {
         onChange={(e) => setEditedPost(e.target.value)}
         close={toggleEditPost}
       />
+
+      {/* Delete Post */}
+
+      <ConfirmationModal
+        show={showDelete}
+        close={toggleDelete}
+        confirm={confirmDelete}
+        isDelete
+        title="Delete Post"
+        buttonText="Delete"
+      >
+        Are your sure that you want to delete this post?
+      </ConfirmationModal>
     </div>
   );
 };
