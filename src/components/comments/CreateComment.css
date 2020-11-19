@@ -1,0 +1,8 @@
+.createComment {
+  display: flex;
+  border-top: 2px solid #f5f5f5;
+  padding-top: 8px;
+}
+.createComment__avatar {
+  margin-right: 1rem;
+}

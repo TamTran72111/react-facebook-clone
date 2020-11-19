@@ -5,6 +5,7 @@ import PostModal from "./PostModal";
 import UserAvatar from "../ui/UserAvatar";
 import EditAndDelete from "../ui/EditAndDelete";
 import ConfirmationModal from "../ui/ConfirmationModal";
+import CreateComment from "../comments/CreateComment";
 import { likePost, unlikePost } from "../../redux/actions/likes";
 import { getAuthUser, getIsAuthor } from "../../redux/selectors/auth";
 import { getLikeStatus } from "../../redux/selectors/likes";
@@ -88,6 +89,7 @@ const Post = ({ post, isAuthor, likePost, unlikePost, liked }) => {
             <span>{post.comments} Comments</span>
           </div>
         </div>
+        <CreateComment postId={post.id} />
       </div>
 
       {/* Edit Post */}
