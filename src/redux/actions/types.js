@@ -10,3 +10,6 @@ export const LOADED = "LOADED";
 export const FETCH_POSTS = "FETCH_POSTS";
 export const LISTEN_POSTS = "LISTEN_POSTS";
 export const CLEANUP_POSTS = "CLEANUP_POSTS";
+
+export const FETCH_LIKES = "FETCH_LIKES";
+export const LIKE_POST = "LIKE_POST";

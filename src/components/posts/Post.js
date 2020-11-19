@@ -8,8 +8,9 @@ import ConfirmationModal from "../ui/ConfirmationModal";
 import { getAuthUser, getIsAuthor } from "../../redux/selectors/auth";
 import { db, firestore } from "../../firebase";
 import "./Post.css";
+import { getLikeStatus } from "../../redux/selectors/likes";
 
-const Post = ({ post, isAuthor, userId }) => {
+const Post = ({ post, isAuthor, userId, liked }) => {
   const [showEditPost, setShowEditPost] = useState(false);
   const [editedPost, setEditedPost] = useState(post.post);
   const [showDelete, setShowDelete] = useState(false);
@@ -73,7 +74,7 @@ const Post = ({ post, isAuthor, userId }) => {
         <div className="iteractions">
           <div>
             <span onClick={toggleLike} className="icon has-text-danger">
-              <i className="far fa-heart"></i>
+              <i className={`${liked ? "fas" : "far"} fa-heart`}></i>
             </span>
 
             <span>{post.likes} Likes</span>
@@ -117,6 +118,7 @@ const Post = ({ post, isAuthor, userId }) => {
 const mapStateToProps = (state, ownProps) => ({
   isAuthor: getIsAuthor(state, ownProps.post.userId),
   userId: getAuthUser(state).id,
+  liked: getLikeStatus(state, ownProps.post.id),
 });
 
 export default connect(mapStateToProps)(Post);
