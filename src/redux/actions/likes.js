@@ -1,8 +1,10 @@
 import { db, firestore } from "../../firebase";
 import { getAuthUser } from "../selectors/auth";
-import { FETCH_LIKES, LIKE_POST } from "./types";
+import { findLike } from "../selectors/likes";
+import { FETCH_LIKES, LIKE_POST, UNLIKE_POST } from "./types";
 
 const Likes = db.collection("likes");
+const Posts = db.collection("posts");
 
 export const fetchLikes = async (dispatch, userId) => {
   const likes = await Likes.where("userId", "==", userId).get();
@@ -17,7 +19,7 @@ export const likePost = (postId) => (dispatch, getState) => {
   const userId = getAuthUser(getState()).id;
   const batch = db.batch();
   // Increase like count
-  batch.update(db.collection("posts").doc(postId), {
+  batch.update(Posts.doc(postId), {
     likes: firestore.FieldValue.increment(1),
   });
   // Create like document
@@ -32,4 +34,18 @@ export const likePost = (postId) => (dispatch, getState) => {
   });
   batch.commit();
   dispatch({ type: LIKE_POST, payload: { id: newLikeDoc.id, ...newLike } });
+};
+
+export const unlikePost = (postId) => (dispatch, getState) => {
+  const like = findLike(getState(), postId);
+
+  const batch = db.batch();
+  // Decrease like count
+  batch.update(Posts.doc(postId), {
+    likes: firestore.FieldValue.increment(-1),
+  });
+  // Delete like document
+  batch.delete(Likes.doc(like.id));
+  batch.commit();
+  dispatch({ type: UNLIKE_POST, payload: like.id });
 };

@@ -1,4 +1,4 @@
-import { FETCH_LIKES, LIKE_POST } from "../actions/types";
+import { FETCH_LIKES, LIKE_POST, UNLIKE_POST } from "../actions/types";
 
 const INTIAL_STATE = {
   likes: [],
@@ -11,6 +11,10 @@ export default (state = INTIAL_STATE, action) => {
       return { likes: action.payload };
     case LIKE_POST:
       return { likes: [...state.likes, action.payload] };
+    case UNLIKE_POST:
+      return {
+        likes: state.likes.filter((like) => like.id !== action.payload),
+      };
     default:
       return state;
   }

@@ -5,13 +5,13 @@ import PostModal from "./PostModal";
 import UserAvatar from "../ui/UserAvatar";
 import EditAndDelete from "../ui/EditAndDelete";
 import ConfirmationModal from "../ui/ConfirmationModal";
-import { likePost } from "../../redux/actions/likes";
+import { likePost, unlikePost } from "../../redux/actions/likes";
 import { getAuthUser, getIsAuthor } from "../../redux/selectors/auth";
 import { getLikeStatus } from "../../redux/selectors/likes";
 import { db } from "../../firebase";
 import "./Post.css";
 
-const Post = ({ post, isAuthor, likePost, liked }) => {
+const Post = ({ post, isAuthor, likePost, unlikePost, liked }) => {
   const [showEditPost, setShowEditPost] = useState(false);
   const [editedPost, setEditedPost] = useState(post.post);
   const [showDelete, setShowDelete] = useState(false);
@@ -38,6 +38,8 @@ const Post = ({ post, isAuthor, likePost, liked }) => {
   const toggleLike = () => {
     if (!liked) {
       likePost(post.id);
+    } else {
+      unlikePost(post.id);
     }
   };
 
@@ -121,4 +123,4 @@ const mapStateToProps = (state, ownProps) => ({
   liked: getLikeStatus(state, ownProps.post.id),
 });
 
-export default connect(mapStateToProps, { likePost })(Post);
+export default connect(mapStateToProps, { likePost, unlikePost })(Post);
