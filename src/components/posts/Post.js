@@ -5,11 +5,11 @@ import PostModal from "./PostModal";
 import UserAvatar from "../ui/UserAvatar";
 import EditAndDelete from "../ui/EditAndDelete";
 import ConfirmationModal from "../ui/ConfirmationModal";
-import { getIsAuthor } from "../../redux/selectors/auth";
-import { db } from "../../firebase";
+import { getAuthUser, getIsAuthor } from "../../redux/selectors/auth";
+import { db, firestore } from "../../firebase";
 import "./Post.css";
 
-const Post = ({ post, isAuthor }) => {
+const Post = ({ post, isAuthor, userId }) => {
   const [showEditPost, setShowEditPost] = useState(false);
   const [editedPost, setEditedPost] = useState(post.post);
   const [showDelete, setShowDelete] = useState(false);
@@ -31,6 +31,19 @@ const Post = ({ post, isAuthor }) => {
   const confirmDelete = () => {
     db.collection("posts").doc(post.id).delete();
     setShowDelete(false);
+  };
+
+  const toggleLike = () => {
+    const batch = db.batch();
+    batch.update(db.collection("posts").doc(post.id), {
+      likes: firestore.FieldValue.increment(1),
+    });
+    batch.set(db.collection("likes").doc(), {
+      userId,
+      postId: post.id,
+      created_at: firestore.FieldValue.serverTimestamp(),
+    });
+    batch.commit();
   };
 
   const created_at = new Date(post.created_at.seconds * 1000);
@@ -59,7 +72,7 @@ const Post = ({ post, isAuthor }) => {
         <hr />
         <div className="iteractions">
           <div>
-            <span className="icon has-text-danger">
+            <span onClick={toggleLike} className="icon has-text-danger">
               <i className="far fa-heart"></i>
             </span>
 
@@ -103,6 +116,7 @@ const Post = ({ post, isAuthor }) => {
 
 const mapStateToProps = (state, ownProps) => ({
   isAuthor: getIsAuthor(state, ownProps.post.userId),
+  userId: getAuthUser(state).id,
 });
 
 export default connect(mapStateToProps)(Post);
