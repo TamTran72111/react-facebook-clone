@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 
 import PostModal from "./PostModal";
@@ -6,36 +6,34 @@ import UserAvatar from "../ui/UserAvatar";
 import EditAndDelete from "../ui/EditAndDelete";
 import ConfirmationModal from "../ui/ConfirmationModal";
 import CreateComment from "../comments/CreateComment";
+import CommentList from "../comments/CommentList";
 import { likePost, unlikePost } from "../../redux/actions/likes";
 import { getAuthUser, getIsAuthor } from "../../redux/selectors/auth";
 import { getLikeStatus } from "../../redux/selectors/likes";
 import { db } from "../../firebase";
+import { useToggle } from "../../hooks";
 import "./Post.css";
-import CommentList from "../comments/CommentList";
 
 const Post = ({ post, isAuthor, likePost, unlikePost, liked }) => {
-  const [showEditPost, setShowEditPost] = useState(false);
   const [editedPost, setEditedPost] = useState(post.post);
-  const [showDelete, setShowDelete] = useState(false);
-  const [showComments, setShowComments] = useState(false);
+  const [showEditPost, toggleEditPost] = useToggle();
+  const [showDelete, toggleDelete] = useToggle();
+  const [showComments, toggleShowComments] = useToggle();
 
-  const toggleEditPost = () => {
-    if (showEditPost) {
+  useEffect(() => {
+    if (!showEditPost) {
       setEditedPost(post.post);
     }
-    setShowEditPost(!showEditPost);
-  };
+  }, [showEditPost, post.post]);
 
   const editPost = () => {
     db.collection("posts").doc(post.id).update({ post: editedPost });
-    setShowEditPost(false);
+    toggleEditPost();
   };
-
-  const toggleDelete = () => setShowDelete((prev) => !prev);
 
   const confirmDelete = () => {
     db.collection("posts").doc(post.id).delete();
-    setShowDelete(false);
+    toggleDelete();
   };
 
   const toggleLike = () => {
@@ -44,10 +42,6 @@ const Post = ({ post, isAuthor, likePost, unlikePost, liked }) => {
     } else {
       unlikePost(post.id);
     }
-  };
-
-  const toggleShowComments = () => {
-    setShowComments((prev) => !prev);
   };
 
   let created_at;
