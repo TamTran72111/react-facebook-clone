@@ -1,0 +1,25 @@
+.comment {
+  display: flex;
+  border-top: 2px solid #f5f5f5;
+  padding-top: 8px;
+}
+.comment__avatar {
+  margin-right: 1rem;
+}
+.comment__content {
+  background-color: #eee;
+  flex-grow: 1;
+  border-radius: 7px;
+  padding: 0.25rem 0.75rem;
+}
+a .title:hover {
+  text-decoration: underline;
+}
+a {
+  display: block;
+}
+
+.comment__content > div {
+  display: flex;
+  justify-content: space-between;
+}

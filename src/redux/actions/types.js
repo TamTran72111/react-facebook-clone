@@ -14,3 +14,5 @@ export const CLEANUP_POSTS = "CLEANUP_POSTS";
 export const FETCH_LIKES = "FETCH_LIKES";
 export const LIKE_POST = "LIKE_POST";
 export const UNLIKE_POST = "UNLIKE_POST";
+
+export const FETCH_POST_COMMENTS = "FETCH_POST_COMMENTS";

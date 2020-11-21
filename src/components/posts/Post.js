@@ -11,11 +11,13 @@ import { getAuthUser, getIsAuthor } from "../../redux/selectors/auth";
 import { getLikeStatus } from "../../redux/selectors/likes";
 import { db } from "../../firebase";
 import "./Post.css";
+import CommentList from "../comments/CommentList";
 
 const Post = ({ post, isAuthor, likePost, unlikePost, liked }) => {
   const [showEditPost, setShowEditPost] = useState(false);
   const [editedPost, setEditedPost] = useState(post.post);
   const [showDelete, setShowDelete] = useState(false);
+  const [showComments, setShowComments] = useState(false);
 
   const toggleEditPost = () => {
     if (showEditPost) {
@@ -42,6 +44,10 @@ const Post = ({ post, isAuthor, likePost, unlikePost, liked }) => {
     } else {
       unlikePost(post.id);
     }
+  };
+
+  const toggleShowComments = () => {
+    setShowComments((prev) => !prev);
   };
 
   let created_at;
@@ -83,12 +89,17 @@ const Post = ({ post, isAuthor, likePost, unlikePost, liked }) => {
             <span>{post.likes} Likes</span>
           </div>
           <div>
-            <span className="icon has-text-info">
+            <span onClick={toggleShowComments} className="icon has-text-info">
               <i className="far fa-comment"></i>
             </span>
             <span>{post.comments} Comments</span>
           </div>
         </div>
+        <CommentList
+          postId={post.id}
+          show={showComments}
+          toggle={toggleShowComments}
+        />
         <CreateComment postId={post.id} />
       </div>
 

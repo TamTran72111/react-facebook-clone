@@ -1,5 +1,6 @@
 import { db, firestore } from "../../firebase";
 import { getAuthUser } from "../selectors/auth";
+import { FETCH_POST_COMMENTS } from "./types";
 
 const Comments = db.collection("comments");
 const Posts = db.collection("posts");
@@ -21,4 +22,21 @@ export const createComment = (postId, comment) => (_, getState) => {
     created_at: firestore.FieldValue.serverTimestamp(),
   });
   batch.commit();
+};
+
+export const fetchPostComments = async (dispatch, postId) => {
+  const comments = await Comments.where("postId", "==", postId)
+    .orderBy("created_at", "asc")
+    .get();
+
+  dispatch({
+    type: FETCH_POST_COMMENTS,
+    payload: {
+      postId,
+      comments: comments.docs.map((comment) => ({
+        id: comment.id,
+        ...comment.data(),
+      })),
+    },
+  });
 };

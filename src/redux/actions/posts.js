@@ -1,4 +1,5 @@
 import { db } from "../../firebase";
+import { fetchPostComments } from "./comments";
 import { CLEANUP_POSTS, FETCH_POSTS, LISTEN_POSTS } from "./types";
 
 const Posts = db.collection("posts");
@@ -12,6 +13,13 @@ export const fetchAllPosts = () => (dispatch) => {
         ...post.data(),
       }));
       dispatch({ type: FETCH_POSTS, payload: posts });
+
+      // Fetch comments for changed posts (added and modified only)
+      snapshot.docChanges().forEach((change) => {
+        if (change.type === "modified" || change.type === "added") {
+          fetchPostComments(dispatch, change.doc.id);
+        }
+      });
     }
   );
   dispatch({ type: LISTEN_POSTS, payload: unsubscribe });
