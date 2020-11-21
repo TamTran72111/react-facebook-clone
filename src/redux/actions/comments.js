@@ -1,6 +1,6 @@
 import { db, firestore } from "../../firebase";
 import { getAuthUser } from "../selectors/auth";
-import { FETCH_POST_COMMENTS } from "./types";
+import { EDIT_COMMENT, FETCH_POST_COMMENTS } from "./types";
 
 const Comments = db.collection("comments");
 const Posts = db.collection("posts");
@@ -39,4 +39,9 @@ export const fetchPostComments = async (dispatch, postId) => {
       })),
     },
   });
+};
+
+export const editComment = (payload) => (dispatch) => {
+  Comments.doc(payload.commentId).update({ comment: payload.comment });
+  dispatch({ type: EDIT_COMMENT, payload });
 };

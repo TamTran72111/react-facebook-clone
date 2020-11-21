@@ -16,3 +16,4 @@ export const LIKE_POST = "LIKE_POST";
 export const UNLIKE_POST = "UNLIKE_POST";
 
 export const FETCH_POST_COMMENTS = "FETCH_POST_COMMENTS";
+export const EDIT_COMMENT = "EDIT_COMMENT";
