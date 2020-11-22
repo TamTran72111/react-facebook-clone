@@ -1,18 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { connect } from "react-redux";
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-import UserAvatar from "../ui/UserAvatar";
-import EditAndDelete from "../ui/EditAndDelete";
-import { getIsAuthor } from "../../redux/selectors/auth";
-import { editComment } from "../../redux/actions/comments";
-import { useToggle } from "../../hooks";
-import "./Comment.css";
+import UserAvatar from '../ui/UserAvatar';
+import EditAndDelete from '../ui/EditAndDelete';
+import ConfirmationModal from '../ui/ConfirmationModal';
+import { getIsAuthor } from '../../redux/selectors/auth';
+import { editComment, deleteComment } from '../../redux/actions/comments';
+import { useToggle } from '../../hooks';
+import './Comment.css';
 
-const Comment = ({ comment, editComment }) => {
+const Comment = ({ isAuthor, comment, editComment, deleteComment }) => {
   const [showEdit, toggleEdit] = useToggle();
   const [showDelete, toggleDelete] = useToggle();
-  const [editedComment, setEditedComment] = useState("");
+  const [editedComment, setEditedComment] = useState('');
 
   useEffect(() => {
     if (!showEdit) {
@@ -21,14 +22,14 @@ const Comment = ({ comment, editComment }) => {
   }, [showEdit, comment.comment]);
 
   const onKeyUp = (e) => {
-    if (e.code === "Escape") {
+    if (e.code === 'Escape') {
       toggleEdit();
     }
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (editedComment !== "") {
+    if (editedComment !== '') {
       editComment({
         comment: editedComment,
         commentId: comment.id,
@@ -36,6 +37,10 @@ const Comment = ({ comment, editComment }) => {
       });
       toggleEdit();
     }
+  };
+
+  const confirmDelete = () => {
+    deleteComment(comment.id, comment.postId);
   };
 
   return (
@@ -53,7 +58,7 @@ const Comment = ({ comment, editComment }) => {
             <h6 className="title is-6">{comment.displayName}</h6>
           </Link>
           <EditAndDelete
-            isAuthor="isAuthor"
+            isAuthor={isAuthor}
             toggleEdit={toggleEdit}
             toggleDelete={toggleDelete}
           />
@@ -72,6 +77,17 @@ const Comment = ({ comment, editComment }) => {
           <p>{comment.comment}</p>
         )}
       </div>
+
+      <ConfirmationModal
+        show={showDelete}
+        close={toggleDelete}
+        confirm={confirmDelete}
+        isDelete
+        title="Delete Comment"
+        buttonText="Delete"
+      >
+        Are your sure that you want to delete this comment?
+      </ConfirmationModal>
     </div>
   );
 };
@@ -80,4 +96,6 @@ const mapStateToProps = (state, ownProps) => {
   return { isAuthor: getIsAuthor(state, ownProps.comment.userId) };
 };
 
-export default connect(mapStateToProps, { editComment })(Comment);
+export default connect(mapStateToProps, { editComment, deleteComment })(
+  Comment
+);

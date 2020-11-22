@@ -1,9 +1,9 @@
-import { db, firestore } from "../../firebase";
-import { getAuthUser } from "../selectors/auth";
-import { EDIT_COMMENT, FETCH_POST_COMMENTS } from "./types";
+import { db, firestore } from '../../firebase';
+import { getAuthUser } from '../selectors/auth';
+import { EDIT_COMMENT, FETCH_POST_COMMENTS } from './types';
 
-const Comments = db.collection("comments");
-const Posts = db.collection("posts");
+const Comments = db.collection('comments');
+const Posts = db.collection('posts');
 
 export const createComment = (postId, comment) => (_, getState) => {
   const user = getAuthUser(getState());
@@ -25,8 +25,8 @@ export const createComment = (postId, comment) => (_, getState) => {
 };
 
 export const fetchPostComments = async (dispatch, postId) => {
-  const comments = await Comments.where("postId", "==", postId)
-    .orderBy("created_at", "asc")
+  const comments = await Comments.where('postId', '==', postId)
+    .orderBy('created_at', 'asc')
     .get();
 
   dispatch({
@@ -44,4 +44,13 @@ export const fetchPostComments = async (dispatch, postId) => {
 export const editComment = (payload) => (dispatch) => {
   Comments.doc(payload.commentId).update({ comment: payload.comment });
   dispatch({ type: EDIT_COMMENT, payload });
+};
+
+export const deleteComment = (commentId, postId) => () => {
+  const batch = db.batch();
+  batch.delete(Comments.doc(commentId));
+  batch.update(Posts.doc(postId), {
+    comments: firestore.FieldValue.increment(-1),
+  });
+  batch.commit();
 };
