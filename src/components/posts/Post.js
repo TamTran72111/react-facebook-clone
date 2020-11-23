@@ -1,20 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 
-import PostModal from "./PostModal";
-import UserAvatar from "../ui/UserAvatar";
-import EditAndDelete from "../ui/EditAndDelete";
-import ConfirmationModal from "../ui/ConfirmationModal";
-import CreateComment from "../comments/CreateComment";
-import CommentList from "../comments/CommentList";
-import { likePost, unlikePost } from "../../redux/actions/likes";
-import { getAuthUser, getIsAuthor } from "../../redux/selectors/auth";
-import { getLikeStatus } from "../../redux/selectors/likes";
-import { db } from "../../firebase";
-import { useToggle } from "../../hooks";
-import "./Post.css";
+import PostModal from './PostModal';
+import UserAvatar from '../ui/UserAvatar';
+import EditAndDelete from '../ui/EditAndDelete';
+import ConfirmationModal from '../ui/ConfirmationModal';
+import CreateComment from '../comments/CreateComment';
+import CommentList from '../comments/CommentList';
+import { likePost, unlikePost } from '../../redux/actions/likes';
+import { getAuthUser, getIsAuthor } from '../../redux/selectors/auth';
+import { getLikeStatus } from '../../redux/selectors/likes';
+import { db } from '../../firebase';
+import { useToggle } from '../../hooks';
+import './Post.css';
+import { getCommentStatus } from '../../redux/selectors/comments';
 
-const Post = ({ post, isAuthor, likePost, unlikePost, liked }) => {
+const Post = ({ post, isAuthor, likePost, unlikePost, liked, commented }) => {
   const [editedPost, setEditedPost] = useState(post.post);
   const [showEditPost, toggleEditPost] = useToggle();
   const [showDelete, toggleDelete] = useToggle();
@@ -27,12 +28,12 @@ const Post = ({ post, isAuthor, likePost, unlikePost, liked }) => {
   }, [showEditPost, post.post]);
 
   const editPost = () => {
-    db.collection("posts").doc(post.id).update({ post: editedPost });
+    db.collection('posts').doc(post.id).update({ post: editedPost });
     toggleEditPost();
   };
 
   const confirmDelete = () => {
-    db.collection("posts").doc(post.id).delete();
+    db.collection('posts').doc(post.id).delete();
     toggleDelete();
   };
 
@@ -77,14 +78,14 @@ const Post = ({ post, isAuthor, likePost, unlikePost, liked }) => {
         <div className="iteractions">
           <div>
             <span onClick={toggleLike} className="icon has-text-danger">
-              <i className={`${liked ? "fas" : "far"} fa-heart`}></i>
+              <i className={`${liked ? 'fas' : 'far'} fa-heart`}></i>
             </span>
 
             <span>{post.likes} Likes</span>
           </div>
           <div>
             <span onClick={toggleShowComments} className="icon has-text-info">
-              <i className="far fa-comment"></i>
+              <i className={`${commented ? 'fas' : 'far'} fa-comment`}></i>
             </span>
             <span>{post.comments} Comments</span>
           </div>
@@ -128,6 +129,7 @@ const mapStateToProps = (state, ownProps) => ({
   isAuthor: getIsAuthor(state, ownProps.post.userId),
   userId: getAuthUser(state).id,
   liked: getLikeStatus(state, ownProps.post.id),
+  commented: getCommentStatus(state, ownProps.post.id),
 });
 
 export default connect(mapStateToProps, { likePost, unlikePost })(Post);
