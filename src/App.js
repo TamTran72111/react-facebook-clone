@@ -1,13 +1,14 @@
-import React, { useEffect } from "react";
-import { Router, Switch, Route } from "react-router-dom";
-import { connect } from "react-redux";
+import React, { useEffect } from 'react';
+import { Router, Switch, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-import history from "./history";
-import Navbar from "./components/nav/Navbar";
-import Home from "./pages/Home";
-import Auth from "./pages/Auth";
-import { setupAuthListener, cleanupAuth } from "./redux/actions/auth";
-import ProtectedRoute from "./components/ProtectedRoute";
+import history from './history';
+import Navbar from './components/nav/Navbar';
+import Home from './pages/Home';
+import Auth from './pages/Auth';
+import { setupAuthListener, cleanupAuth } from './redux/actions/auth';
+import ProtectedRoute from './components/ProtectedRoute';
+import User from './pages/User';
 
 const App = ({ setupAuthListener, cleanupAuth }) => {
   useEffect(() => {
@@ -22,6 +23,7 @@ const App = ({ setupAuthListener, cleanupAuth }) => {
         <div className="container">
           <Switch>
             <ProtectedRoute path="/" exact component={Home} />
+            <ProtectedRoute path="/users/:id" exact component={User} />
             <Route path="/auth" exact component={Auth} />
           </Switch>
         </div>
