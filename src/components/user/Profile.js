@@ -1,10 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
+
+import { useToggle } from '../../hooks';
 import { getSelectedUser } from '../../redux/selectors/user';
+import UploadAvatar from './UploadAvatar';
 
 import './Profile.css';
 
 const Profile = ({ user }) => {
+  const [showUploadAvatar, toggleUploadAvatar] = useToggle();
+
   if (!user) {
     return null;
   }
@@ -18,12 +23,12 @@ const Profile = ({ user }) => {
       v-if="user"
       className="profile box py-5 has-background-white has-text-centered"
     >
-      <div className="image-wrapper mt-1">
+      <div className="image-wrapper mt-1" onClick={toggleUploadAvatar}>
         <figure className="image">
           <img className="is-rounded" src={user.avatar} alt="User avatar" />
         </figure>
       </div>
-
+      <UploadAvatar show={showUploadAvatar} close={toggleUploadAvatar} />
       <h3 className="title is-3 mt-2 mb-0">{user.displayName}</h3>
       {fullname !== user.displayName && <div>({fullname})</div>}
 
