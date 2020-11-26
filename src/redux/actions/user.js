@@ -32,3 +32,16 @@ export const updateAvatar = (imageFile) => async (dispatch, getState) => {
     });
   }
 };
+
+export const editProfile = (profile) => async (dispatch, getState) => {
+  const user = getSelectedUser(getState()); // Also the authenticated user
+
+  await Users.doc(user.userId).update(profile);
+  dispatch({
+    type: FETCH_USER,
+    payload: {
+      ...user,
+      ...profile,
+    },
+  });
+};

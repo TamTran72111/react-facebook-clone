@@ -6,6 +6,7 @@ import { getSelectedUser } from '../../redux/selectors/user';
 import UploadAvatar from './UploadAvatar';
 
 import './Profile.css';
+import EditProfile from './EditProfile';
 
 const Profile = ({ user }) => {
   const [showUploadAvatar, toggleUploadAvatar] = useToggle();
@@ -29,7 +30,10 @@ const Profile = ({ user }) => {
         </figure>
       </div>
       <UploadAvatar show={showUploadAvatar} close={toggleUploadAvatar} />
-      <h3 className="title is-3 mt-2 mb-0">{user.displayName}</h3>
+      <h3 className="title is-3 mt-2 mb-0">
+        {user.displayName}
+        <EditProfile v-if="isOwner" />
+      </h3>
       {fullname !== user.displayName && <div>({fullname})</div>}
 
       <div className="info mt-3 pt-2 pb-1 is-5">

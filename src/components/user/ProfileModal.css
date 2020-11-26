@@ -1,0 +1,19 @@
+.profile-modal i.fa-times-circle {
+  pointer-events: auto;
+  cursor: pointer;
+  transform: translateY(-0.7rem);
+  font-size: 2rem;
+}
+
+.profile-modal i.fa-times-circle:hover {
+  color: #c0c0c0;
+}
+
+.profile-modal .doubleField {
+  display: flex;
+  justify-content: space-between;
+}
+
+.profile-modal button.button {
+  width: 80px;
+}
