@@ -2,13 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { useToggle } from '../../hooks';
-import { getSelectedUser } from '../../redux/selectors/user';
+import { getIsOwner, getSelectedUser } from '../../redux/selectors/user';
 import UploadAvatar from './UploadAvatar';
 
 import './Profile.css';
 import EditProfile from './EditProfile';
 
-const Profile = ({ user }) => {
+const Profile = ({ user, isOnwer }) => {
   const [showUploadAvatar, toggleUploadAvatar] = useToggle();
 
   if (!user) {
@@ -24,15 +24,21 @@ const Profile = ({ user }) => {
       v-if="user"
       className="profile box py-5 has-background-white has-text-centered"
     >
-      <div className="image-wrapper mt-1" onClick={toggleUploadAvatar}>
+      <div
+        className="image-wrapper mt-1"
+        onClick={toggleUploadAvatar}
+        style={isOnwer ? { cursor: 'pointer' } : null}
+      >
         <figure className="image">
           <img className="is-rounded" src={user.avatar} alt="User avatar" />
         </figure>
       </div>
-      <UploadAvatar show={showUploadAvatar} close={toggleUploadAvatar} />
+      {isOnwer && (
+        <UploadAvatar show={showUploadAvatar} close={toggleUploadAvatar} />
+      )}
       <h3 className="title is-3 mt-2 mb-0">
         {user.displayName}
-        <EditProfile v-if="isOwner" />
+        {isOnwer && <EditProfile />}
       </h3>
       {fullname !== user.displayName && <div>({fullname})</div>}
 
@@ -59,6 +65,7 @@ const Profile = ({ user }) => {
 const mapStateToProps = (state) => {
   return {
     user: getSelectedUser(state),
+    isOnwer: getIsOwner(state),
   };
 };
 
