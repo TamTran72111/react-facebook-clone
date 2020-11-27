@@ -54,3 +54,12 @@ export const deleteComment = (commentId, postId) => () => {
   });
   batch.commit();
 };
+
+export const updateUserInfoForComments = async (userId, updatedInfo) => {
+  const comments = await Comments.where('userId', '==', userId).get();
+  const batch = db.batch();
+  comments.docs.forEach((comment) => {
+    batch.update(comment.ref, updatedInfo);
+  });
+  await batch.commit();
+};

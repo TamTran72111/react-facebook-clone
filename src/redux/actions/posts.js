@@ -28,3 +28,12 @@ export const fetchAllPosts = () => (dispatch) => {
 export const cleanupPosts = () => (dispatch) => {
   dispatch({ type: CLEANUP_POSTS });
 };
+
+export const updateUserInfoForPosts = async (userId, updatedInfo) => {
+  const posts = await Posts.where('userId', '==', userId).get();
+  const batch = db.batch();
+  posts.docs.forEach((post) => {
+    batch.update(post.ref, updatedInfo);
+  });
+  await batch.commit();
+};

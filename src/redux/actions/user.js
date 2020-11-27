@@ -1,5 +1,7 @@
 import { db, storage } from '../../firebase';
 import { getSelectedUser } from '../selectors/user';
+import { updateUserInfoForComments } from './comments';
+import { updateUserInfoForPosts } from './posts';
 import { FETCH_USER } from './types';
 
 const Users = db.collection('users');
@@ -30,11 +32,12 @@ export const updateAvatar = (imageFile) => async (dispatch, getState) => {
         avatar: userAvatar,
       },
     });
+    await updateUserInfoForPostsAndComments(user.userId, { userAvatar });
   }
 };
 
 export const editProfile = (profile) => async (dispatch, getState) => {
-  const user = getSelectedUser(getState()); // Also the authenticated user
+  const user = { ...getSelectedUser(getState()) }; // Also the authenticated user
 
   await Users.doc(user.userId).update(profile);
   dispatch({
@@ -44,4 +47,14 @@ export const editProfile = (profile) => async (dispatch, getState) => {
       ...profile,
     },
   });
+  if (user.displayName !== profile.displayName) {
+    await updateUserInfoForPostsAndComments(user.userId, {
+      displayName: profile.displayName,
+    });
+  }
+};
+
+const updateUserInfoForPostsAndComments = async (userId, updatedInfo) => {
+  await updateUserInfoForPosts(userId, updatedInfo);
+  await updateUserInfoForComments(userId, updatedInfo);
 };
