@@ -1,7 +1,7 @@
 import { db, storage } from '../../firebase';
 import { getSelectedUser } from '../selectors/user';
 import { updateUserInfoForComments } from './comments';
-import { updateUserInfoForPosts } from './posts';
+import { fetchUserPosts, updateUserInfoForPosts } from './posts';
 import { FETCH_USER } from './types';
 
 const Users = db.collection('users');
@@ -15,6 +15,7 @@ export const fetchUser = (userId) => async (dispatch) => {
       ...user.data(),
     },
   });
+  fetchUserPosts(dispatch, userId);
 };
 
 export const updateAvatar = (imageFile) => async (dispatch, getState) => {

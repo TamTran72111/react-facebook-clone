@@ -4,8 +4,8 @@ import { CLEANUP_POSTS, FETCH_POSTS, LISTEN_POSTS } from './types';
 
 const Posts = db.collection('posts');
 
-export const fetchAllPosts = () => (dispatch) => {
-  const unsubscribe = Posts.orderBy('created_at', 'desc').onSnapshot(
+const fetchPosts = (dispatch, PostCollection = Posts) => {
+  const unsubscribe = PostCollection.orderBy('created_at', 'desc').onSnapshot(
     (snapshot) => {
       // Update posts on snapshot change
       const posts = snapshot.docs.map((post) => ({
@@ -23,6 +23,15 @@ export const fetchAllPosts = () => (dispatch) => {
     }
   );
   dispatch({ type: LISTEN_POSTS, payload: unsubscribe });
+};
+
+export const fetchAllPosts = () => (dispatch) => {
+  fetchPosts(dispatch, Posts);
+};
+
+export const fetchUserPosts = (dispatch, userId) => {
+  const PostCollection = Posts.where('userId', '==', userId);
+  fetchPosts(dispatch, PostCollection);
 };
 
 export const cleanupPosts = () => (dispatch) => {
