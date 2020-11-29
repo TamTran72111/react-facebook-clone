@@ -3,12 +3,13 @@ import { connect } from 'react-redux';
 
 import { useToggle } from '../../hooks';
 import { getIsOwner, getSelectedUser } from '../../redux/selectors/user';
+import { follow } from '../../redux/actions/follows';
 import UploadAvatar from './UploadAvatar';
 
 import './Profile.css';
 import EditProfile from './EditProfile';
 
-const Profile = ({ user, isOnwer }) => {
+const Profile = ({ user, isOnwer, follow }) => {
   const [showUploadAvatar, toggleUploadAvatar] = useToggle();
 
   if (!user) {
@@ -58,6 +59,13 @@ const Profile = ({ user, isOnwer }) => {
           {joinedDate}
         </div>
       </div>
+      {!isOnwer && (
+        <div className="follow">
+          <button className="button is-primary" onClick={follow}>
+            Follow
+          </button>
+        </div>
+      )}
     </div>
   );
 };
@@ -69,4 +77,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(Profile);
+export default connect(mapStateToProps, { follow })(Profile);
