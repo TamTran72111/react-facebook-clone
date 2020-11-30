@@ -8,8 +8,9 @@ import UploadAvatar from './UploadAvatar';
 
 import './Profile.css';
 import EditProfile from './EditProfile';
+import { getFollowed } from '../../redux/selectors/follows';
 
-const Profile = ({ user, isOnwer, follow }) => {
+const Profile = ({ user, isOnwer, followed, follow }) => {
   const [showUploadAvatar, toggleUploadAvatar] = useToggle();
 
   if (!user) {
@@ -61,9 +62,13 @@ const Profile = ({ user, isOnwer, follow }) => {
       </div>
       {!isOnwer && (
         <div className="follow">
-          <button className="button is-primary" onClick={follow}>
-            Follow
-          </button>
+          {followed ? (
+            <button className="button is-primary is-outlined">Unfollow</button>
+          ) : (
+            <button className="button is-primary" onClick={follow}>
+              Follow
+            </button>
+          )}
         </div>
       )}
     </div>
@@ -74,6 +79,7 @@ const mapStateToProps = (state) => {
   return {
     user: getSelectedUser(state),
     isOnwer: getIsOwner(state),
+    followed: getFollowed(state),
   };
 };
 
