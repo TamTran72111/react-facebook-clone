@@ -1,5 +1,6 @@
 import { db } from '../../firebase';
 import { getAuthUser } from '../selectors/auth';
+import { getFollow } from '../selectors/follows';
 import { getSelectedUser } from '../selectors/user';
 import { CLEANUP_FOLLOWS, FETCH_FOLLOWS, LISTEN_FOLLOWS } from './types';
 
@@ -14,6 +15,11 @@ export const follow = () => async (_, getState) => {
     follower: authUser.id,
     following: selectedUser.userId,
   });
+};
+
+export const unfollow = () => async (_, getState) => {
+  const follow = getFollow(getState());
+  await Follows.doc(follow.id).delete();
 };
 
 export const fetchFollows = (dispatch, userId) => {

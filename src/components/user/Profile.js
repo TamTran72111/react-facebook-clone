@@ -3,14 +3,14 @@ import { connect } from 'react-redux';
 
 import { useToggle } from '../../hooks';
 import { getIsOwner, getSelectedUser } from '../../redux/selectors/user';
-import { follow } from '../../redux/actions/follows';
+import { follow, unfollow } from '../../redux/actions/follows';
 import UploadAvatar from './UploadAvatar';
 
 import './Profile.css';
 import EditProfile from './EditProfile';
 import { getFollowed } from '../../redux/selectors/follows';
 
-const Profile = ({ user, isOnwer, followed, follow }) => {
+const Profile = ({ user, isOnwer, followed, follow, unfollow }) => {
   const [showUploadAvatar, toggleUploadAvatar] = useToggle();
 
   if (!user) {
@@ -63,7 +63,12 @@ const Profile = ({ user, isOnwer, followed, follow }) => {
       {!isOnwer && (
         <div className="follow">
           {followed ? (
-            <button className="button is-primary is-outlined">Unfollow</button>
+            <button
+              className="button is-primary is-outlined"
+              onClick={unfollow}
+            >
+              Unfollow
+            </button>
           ) : (
             <button className="button is-primary" onClick={follow}>
               Follow
@@ -83,4 +88,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { follow })(Profile);
+export default connect(mapStateToProps, { follow, unfollow })(Profile);
