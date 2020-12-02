@@ -1,21 +1,22 @@
-import React, { useState } from "react";
-import { connect } from "react-redux";
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
 
-import { getAuthUser } from "../../redux/selectors/auth";
-import UserAvatar from "../ui/UserAvatar";
-import PostModal from "./PostModal";
-import "./CreatePost.css";
-import { db, firestore } from "../../firebase";
+import { getAuthUser } from '../../redux/selectors/auth';
+import { createPostNotification } from '../../redux/actions/notifications';
+import UserAvatar from '../ui/UserAvatar';
+import PostModal from './PostModal';
+import './CreatePost.css';
+import { db, firestore } from '../../firebase';
 
-const CreatePost = ({ user }) => {
-  const [post, setPost] = useState("");
+const CreatePost = ({ user, createPostNotification }) => {
+  const [post, setPost] = useState('');
   const [showNewPost, setShowNewPost] = useState(false);
 
   const toggleNewPost = () => setShowNewPost((prev) => !prev);
   const placeholder = `What's on your mind, ${user?.displayName}`;
 
   const createNewPost = async () => {
-    await db.collection("posts").add({
+    const newPost = await db.collection('posts').add({
       userId: user.id,
       displayName: user.displayName,
       userAvatar: user.avatar,
@@ -24,7 +25,8 @@ const CreatePost = ({ user }) => {
       likes: 0,
       comments: 0,
     });
-    setPost("");
+    await createPostNotification(newPost.id);
+    setPost('');
     setShowNewPost(false);
   };
 
@@ -59,4 +61,4 @@ const CreatePost = ({ user }) => {
 
 const mapStateToProps = (state) => ({ user: getAuthUser(state) });
 
-export default connect(mapStateToProps)(CreatePost);
+export default connect(mapStateToProps, { createPostNotification })(CreatePost);
