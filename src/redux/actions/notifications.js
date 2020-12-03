@@ -1,5 +1,10 @@
 import { db, firestore } from '../../firebase';
 import { getAuthUser } from '../selectors/auth';
+import {
+  CLEANUP_NOTIFICATIONS,
+  FETCH_NOTIFICATIONS,
+  LISTEN_NOTIFICATIONS,
+} from './types';
 
 const Notifications = db.collection('notifications');
 const notificationType = {
@@ -24,4 +29,26 @@ export const createPostNotification = (postId) => async (_, getState) => {
     });
   });
   batch.commit();
+};
+
+export const fetchNotifications = (dispatch, userId) => {
+  const listener = Notifications.where('receiver', '==', userId)
+    .orderBy('created_at', 'desc')
+    .onSnapshot((snapshot) => {
+      dispatch({
+        type: FETCH_NOTIFICATIONS,
+        payload: snapshot.docs.map((notification) => ({
+          id: notification.id,
+          ...notification.data(),
+        })),
+      });
+    });
+  dispatch({
+    type: LISTEN_NOTIFICATIONS,
+    payload: listener,
+  });
+};
+
+export const cleanupNotifications = (dispatch) => {
+  dispatch({ type: CLEANUP_NOTIFICATIONS });
 };

@@ -6,6 +6,7 @@ import likes from './likes';
 import comments from './comments';
 import user from './user';
 import follows from './follows';
+import notifications from './notifications';
 
 export default combineReducers({
   auth,
@@ -15,4 +16,5 @@ export default combineReducers({
   comments,
   user,
   follows,
+  notifications,
 });

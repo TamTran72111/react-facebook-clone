@@ -9,6 +9,7 @@ import {
 import { auth, db, firestore } from '../../firebase';
 import { fetchLikes } from './likes';
 import { cleanupFollows, fetchFollows } from './follows';
+import { cleanupNotifications, fetchNotifications } from './notifications';
 
 const defaultUserAvatar =
   'https://firebasestorage.googleapis.com/v0/b/vue-projects-89c61.appspot.com/o/avatars%2Fdefault-user-avater.png?alt=media&token=55e5edb1-e550-4161-8ee0-3e72d2d2a20f';
@@ -64,10 +65,12 @@ export const setupAuthListener = () => (dispatch, getState) => {
       });
       fetchLikes(dispatch, user.uid);
       fetchFollows(dispatch, user.uid);
+      fetchNotifications(dispatch, user.uid);
     } else {
       // No user is signed in, so sign out to clear the data
       dispatch({ type: SIGN_OUT });
       cleanupFollows(dispatch);
+      cleanupNotifications(dispatch);
     }
     dispatch({ type: LOADED });
   });
