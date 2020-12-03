@@ -22,10 +22,7 @@ const Profile = ({ user, isOnwer, followed, follow, unfollow }) => {
   const joinedDate = `Joined ${date.toLocaleDateString()}`;
 
   return (
-    <div
-      v-if="user"
-      className="profile box py-5 has-background-white has-text-centered"
-    >
+    <div className="profile box py-5 has-background-white has-text-centered">
       <div
         className="image-wrapper mt-1"
         onClick={toggleUploadAvatar}
@@ -45,14 +42,16 @@ const Profile = ({ user, isOnwer, followed, follow, unfollow }) => {
       {fullname !== user.displayName && <div>({fullname})</div>}
 
       <div className="info mt-3 pt-2 pb-1 is-5">
-        <div v-if="user.bio">{user.bio}</div>
+        {user.bio && <div>{user.bio}</div>}
 
-        <div v-if="user.location">
-          <span className="icon has-text-info">
-            <i className="fas fa-map-marker-alt"></i>
-          </span>
-          {user.location}
-        </div>
+        {user.location && (
+          <div>
+            <span className="icon has-text-info">
+              <i className="fas fa-map-marker-alt"></i>
+            </span>
+            {user.location}
+          </div>
+        )}
         <div>
           <span className="icon has-text-info">
             <i className="far fa-calendar"></i>
