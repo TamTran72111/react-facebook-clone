@@ -1,11 +1,12 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { connect } from "react-redux";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-import { getIsLoggedIn } from "../../redux/selectors/auth";
-import { signOut } from "../../redux/actions/auth";
-import logo from "./logo.png";
-import "./Navbar.css";
+import { getIsLoggedIn } from '../../redux/selectors/auth';
+import { signOut } from '../../redux/actions/auth';
+import logo from './logo.png';
+import './Navbar.css';
+import Notifications from '../notifications/Notifications';
 
 const Navbar = ({ signOut, isLoggedIn }) => {
   if (!isLoggedIn) return null;
@@ -64,6 +65,10 @@ const Navbar = ({ signOut, isLoggedIn }) => {
           </div>
 
           <div className="navbar-end">
+            <div class="navbar-item">
+              <Notifications />
+            </div>
+
             <div className="navbar-item">
               <div className="buttons">
                 <button className="button is-primary" onClick={signOut}>

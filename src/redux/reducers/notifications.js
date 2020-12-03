@@ -5,7 +5,7 @@ import {
 } from '../actions/types';
 
 const INTIAL_STATE = {
-  notifications: null,
+  notifications: [],
   listener: null,
 };
 

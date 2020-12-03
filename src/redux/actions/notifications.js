@@ -7,7 +7,8 @@ import {
 } from './types';
 
 const Notifications = db.collection('notifications');
-const notificationType = {
+
+export const notificationType = {
   CREATE_NEW_POST: 'CREATE_NEW_POST',
 };
 
