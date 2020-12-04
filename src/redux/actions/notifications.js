@@ -53,3 +53,7 @@ export const fetchNotifications = (dispatch, userId) => {
 export const cleanupNotifications = (dispatch) => {
   dispatch({ type: CLEANUP_NOTIFICATIONS });
 };
+
+export const removeNotification = (notificationId) => async () => {
+  await Notifications.doc(notificationId).delete();
+};
