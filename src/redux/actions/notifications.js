@@ -1,5 +1,6 @@
 import { db, firestore } from '../../firebase';
 import { getAuthUser } from '../selectors/auth';
+import { getPostById } from '../selectors/posts';
 import {
   CLEANUP_NOTIFICATIONS,
   FETCH_NOTIFICATIONS,
@@ -10,6 +11,7 @@ const Notifications = db.collection('notifications');
 
 export const notificationType = {
   CREATE_NEW_POST: 'CREATE_NEW_POST',
+  LIKE_POST: 'LIKE_POST',
 };
 
 export const createPostNotification = (postId) => async (_, getState) => {
@@ -56,4 +58,18 @@ export const cleanupNotifications = (dispatch) => {
 
 export const removeNotification = (notificationId) => async () => {
   await Notifications.doc(notificationId).delete();
+};
+
+export const createLikeNotification = (postId, getState) => {
+  const state = getState();
+  const authUser = getAuthUser(state);
+  const post = getPostById(state, postId);
+
+  Notifications.add({
+    postId,
+    sender: authUser.displayName,
+    receiver: post.userId,
+    type: notificationType.LIKE_POST,
+    created_at: firestore.FieldValue.serverTimestamp(),
+  });
 };

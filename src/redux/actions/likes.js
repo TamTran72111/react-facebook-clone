@@ -1,13 +1,14 @@
-import { db, firestore } from "../../firebase";
-import { getAuthUser } from "../selectors/auth";
-import { findLike } from "../selectors/likes";
-import { FETCH_LIKES, LIKE_POST, UNLIKE_POST } from "./types";
+import { db, firestore } from '../../firebase';
+import { getAuthUser } from '../selectors/auth';
+import { findLike } from '../selectors/likes';
+import { createLikeNotification } from './notifications';
+import { FETCH_LIKES, LIKE_POST, UNLIKE_POST } from './types';
 
-const Likes = db.collection("likes");
-const Posts = db.collection("posts");
+const Likes = db.collection('likes');
+const Posts = db.collection('posts');
 
 export const fetchLikes = async (dispatch, userId) => {
-  const likes = await Likes.where("userId", "==", userId).get();
+  const likes = await Likes.where('userId', '==', userId).get();
 
   dispatch({
     type: FETCH_LIKES,
@@ -34,6 +35,8 @@ export const likePost = (postId) => (dispatch, getState) => {
   });
   batch.commit();
   dispatch({ type: LIKE_POST, payload: { id: newLikeDoc.id, ...newLike } });
+
+  createLikeNotification(postId, getState);
 };
 
 export const unlikePost = (postId) => (dispatch, getState) => {

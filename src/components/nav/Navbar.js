@@ -65,7 +65,7 @@ const Navbar = ({ signOut, isLoggedIn }) => {
           </div>
 
           <div className="navbar-end">
-            <div class="navbar-item">
+            <div className="navbar-item">
               <Notifications />
             </div>
 

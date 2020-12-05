@@ -10,6 +10,8 @@ const Notification = ({ notification, removeNotification }) => {
   let message;
   if (notification.type === notificationType.CREATE_NEW_POST) {
     message = 'created a new post';
+  } else if (notification.type === notificationType.LIKE_POST) {
+    message = 'liked your post';
   }
 
   return (
