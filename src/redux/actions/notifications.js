@@ -12,6 +12,21 @@ const Notifications = db.collection('notifications');
 export const notificationType = {
   CREATE_NEW_POST: 'CREATE_NEW_POST',
   LIKE_POST: 'LIKE_POST',
+  COMMENT_ON_POST: 'COMMENT_ON_POST',
+};
+
+const createNotification = (postId, getState, type) => {
+  const state = getState();
+  const authUser = getAuthUser(state);
+  const post = getPostById(state, postId);
+
+  Notifications.add({
+    postId,
+    sender: authUser.displayName,
+    receiver: post.userId,
+    type: type,
+    created_at: firestore.FieldValue.serverTimestamp(),
+  });
 };
 
 export const createPostNotification = (postId) => async (_, getState) => {
@@ -61,15 +76,9 @@ export const removeNotification = (notificationId) => async () => {
 };
 
 export const createLikeNotification = (postId, getState) => {
-  const state = getState();
-  const authUser = getAuthUser(state);
-  const post = getPostById(state, postId);
+  createNotification(postId, getState, notificationType.LIKE_POST);
+};
 
-  Notifications.add({
-    postId,
-    sender: authUser.displayName,
-    receiver: post.userId,
-    type: notificationType.LIKE_POST,
-    created_at: firestore.FieldValue.serverTimestamp(),
-  });
+export const createCommentNotification = (postId, getState) => {
+  createNotification(postId, getState, notificationType.COMMENT_ON_POST);
 };

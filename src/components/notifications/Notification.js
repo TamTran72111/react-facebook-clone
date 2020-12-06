@@ -12,6 +12,8 @@ const Notification = ({ notification, removeNotification }) => {
     message = 'created a new post';
   } else if (notification.type === notificationType.LIKE_POST) {
     message = 'liked your post';
+  } else if (notification.type === notificationType.COMMENT_ON_POST) {
+    message = 'commented on your post';
   }
 
   return (

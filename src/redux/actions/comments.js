@@ -1,5 +1,6 @@
 import { db, firestore } from '../../firebase';
 import { getAuthUser } from '../selectors/auth';
+import { createCommentNotification } from './notifications';
 import { EDIT_COMMENT, FETCH_POST_COMMENTS } from './types';
 
 const Comments = db.collection('comments');
@@ -22,6 +23,8 @@ export const createComment = (postId, comment) => (_, getState) => {
     created_at: firestore.FieldValue.serverTimestamp(),
   });
   batch.commit();
+
+  createCommentNotification(postId, getState);
 };
 
 export const fetchPostComments = async (dispatch, postId) => {
