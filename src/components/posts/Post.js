@@ -54,6 +54,12 @@ const Post = ({ post, isAuthor, likePost, unlikePost, liked, commented }) => {
   }
   const date = `${created_at.toLocaleTimeString()} ${created_at.toLocaleDateString()}`;
 
+  const onCreateComment = () => {
+    if (!showComments) {
+      toggleShowComments();
+    }
+  };
+
   return (
     <div className="card my-3 post">
       <div className="card-content">
@@ -95,7 +101,7 @@ const Post = ({ post, isAuthor, likePost, unlikePost, liked, commented }) => {
           show={showComments}
           toggle={toggleShowComments}
         />
-        <CreateComment postId={post.id} />
+        <CreateComment postId={post.id} onCreateComment={onCreateComment} />
       </div>
 
       {/* Edit Post */}
